@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import { signOut } from "next-auth/react";
-import { logger } from "logger";
+import { logger } from "tools/logger";
 
 interface Props {
     callbackUrl: string;

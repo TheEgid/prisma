@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button, HStack } from "@chakra-ui/react";
-import { logger } from "logger";
+import { logger } from "tools/logger";
 
 const Header: React.FC = () => {
     const router = useRouter();

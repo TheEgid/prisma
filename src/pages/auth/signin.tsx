@@ -28,7 +28,7 @@ import { useRouter } from "next/router";
 
 import { BiLockAlt } from "react-icons/bi";
 import FormPasswordlessEmail from "src/components/auth/form-passwordless";
-import { logger } from "logger";
+import { logger } from "tools/logger";
 
 export default function SimpleCard() {
     const [showPassword, setShowPassword] = useState(false);

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "db";
+import { prisma } from "tools/db";
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {

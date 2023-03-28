@@ -3,7 +3,7 @@ import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import { Box, Heading, VStack } from "@chakra-ui/react";
-import { prisma } from "db";
+import { prisma } from "tools/db";
 
 export const getStaticProps: GetStaticProps = async () => {
     const feed = await prisma.post.findMany({

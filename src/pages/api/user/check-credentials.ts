@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import sha256 from "crypto-js/sha256";
 import { omit } from "lodash";
-import { prisma } from "db";
-import { logger } from "logger";
+import { prisma } from "tools/db";
+import { logger } from "tools/logger";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
