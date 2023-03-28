@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
+import { Container } from "react-bootstrap";
 import Header from "./Header";
 
 type Props = {
@@ -7,12 +7,10 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = (props) => (
-    <Box>
+    <Container>
         <Header />
-        <Box p={5} minH="100vh">
-            {props.children}
-        </Box>
-    </Box>
+        {props.children}
+    </Container>
 );
 
 export default Layout;

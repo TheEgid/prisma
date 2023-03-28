@@ -1,16 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { logger } from "tools/logger";
-import { Button, Form, FormGroup, FormLabel, InputGroup } from "react-bootstrap";
-import { PersonBadge, Eye, EyeSlash, Mailbox } from "react-bootstrap-icons";
+import { Button, Form, InputGroup } from "react-bootstrap";
+import { Eye, EyeSlash, Mailbox } from "react-bootstrap-icons";
 
 const offeye = <EyeSlash width="26" height="26" />;
 const eye = <Eye width="26" height="26" />;
 const mailbox = <Mailbox width="26" height="26" />;
-const person = <PersonBadge width="26" height="26" />;
 
 export default function RegistrationCard() {
     const [passwordShow, setPasswordShow] = useState(false);
