@@ -2,10 +2,11 @@
 // import { apiRoot } from "../api";
 
 export const getDogDataFromApi = async () => {
-    // return apiRoot.get("some-path").json();
-    // const res = ""
-    const res = await fetch(`http://localhost:3000/api/dog`, {
-        method: "GET",
-    });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const res = await (
+        await fetch(`http://localhost:3006/api/dog`, {
+            method: "GET",
+        })
+    ).json();
     console.log(res);
 };

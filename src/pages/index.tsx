@@ -4,6 +4,8 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import { prisma } from "tools/db";
+import { useDispatch } from "react-redux";
+import { fetchDogStart } from "src/redux/dog/slices";
 
 export const getStaticProps: GetStaticProps = async () => {
     const feed = await prisma.post.findMany({
@@ -28,10 +30,14 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = (props) => {
+    const dispatch = useDispatch();
+
+    dispatch(fetchDogStart());
+
     return (
         <Layout>
             <Box className="page" pt={5}>
-                <Heading>Public Feed</Heading>
+                <Heading>! Public Feed </Heading>
                 <VStack mt={5} spacing={5}>
                     {props.feed.map((post) => (
                         <Box key={post.id} w="full" shadow="lg" _active={{ shadow: "unset" }}>
