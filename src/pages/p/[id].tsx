@@ -2,10 +2,11 @@ import React from "react";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import ReactMarkdown from "react-markdown";
 import Layout from "../../components/Layout";
-import Router from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { PostProps } from "../../components/Post";
 import { useSession } from "next-auth/react";
 import { prisma } from "tools/db";
+import { NEXTAUTH_URL } from "src/redux/api";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const post = await prisma.post.findUnique({
@@ -23,22 +24,25 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     } as GetServerSidePropsResult<{ [key: string]: any }>;
 };
 
-async function publishPost(id: number): Promise<void> {
-    await fetch(`http://localhost:3000/api/publish/${id}`, {
+async function publishPost(id: number, router: NextRouter): Promise<void> {
+    await fetch(`${NEXTAUTH_URL}/api/publish/${id}`, {
         method: "PUT",
     });
-    await Router.push("/");
+    await router.push("/");
 }
 
-async function deletePost(id: number): Promise<void> {
-    await fetch(`http://localhost:3000/api/post/${id}`, {
+async function deletePost(id: number, router: NextRouter): Promise<void> {
+    await fetch(`${NEXTAUTH_URL}/api/post/${id}`, {
         method: "DELETE",
     });
-    await Router.push("/");
+    await router.push("/");
 }
 
 const Post: React.FC<PostProps> = (props) => {
+    const router = useRouter();
+
     const { data: session, status } = useSession();
+
     if (status === "loading") {
         return <div>Authenticating ...</div>;
     }
@@ -56,10 +60,10 @@ const Post: React.FC<PostProps> = (props) => {
                 <p>By {props?.author?.name || "Unknown author"}</p>
                 <ReactMarkdown>{props.content}</ReactMarkdown>
                 {!props.published && userHasValidSession && postBelongsToUser && (
-                    <button onClick={() => publishPost(props.id)}>Publish</button>
+                    <button onClick={() => publishPost(props.id, router)}>Publish</button>
                 )}
                 {userHasValidSession && postBelongsToUser && (
-                    <button onClick={() => deletePost(props.id)}>Delete</button>
+                    <button onClick={() => deletePost(props.id, router)}>Delete</button>
                 )}
             </div>
             <style>{`

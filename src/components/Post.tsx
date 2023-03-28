@@ -1,5 +1,5 @@
 import React from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 import { Text, Heading, Box } from "@chakra-ui/react";
 
@@ -15,6 +15,8 @@ export type PostProps = {
 };
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
+    const router = useRouter();
+
     const authorName = post.author ? post.author.name : "Unknown author";
     return (
         <Box
@@ -22,7 +24,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
             border="1px solid"
             borderColor="gray.500"
             borderRadius="md"
-            onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
+            onClick={() => router.push("/p/[id]", `/p/${post.id}`)}>
             <Heading size="md">{post.title}</Heading>
             <Text fontSize="sm">By {authorName}</Text>
             <ReactMarkdown>{post.content}</ReactMarkdown>

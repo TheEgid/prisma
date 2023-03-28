@@ -5,6 +5,7 @@ import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { logger } from "tools/logger";
 import { prisma } from "tools/db";
+import { NEXTAUTH_URL } from "src/redux/api";
 
 const options: NextAuthOptions = {
     debug: true,
@@ -37,8 +38,8 @@ const options: NextAuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             authorize: async (credentials) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/restrict-template-expressions
-                const user = await fetch(`${process.env.NEXTAUTH_URL}/api/user/check-credentials`, {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const user = await fetch(`${NEXTAUTH_URL}/api/user/check-credentials`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",

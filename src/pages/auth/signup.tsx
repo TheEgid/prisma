@@ -19,10 +19,12 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { logger } from "tools/logger";
+import { NEXTAUTH_URL } from "src/redux/api";
 
 export default function SignupCard() {
-    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+
     const {
         handleSubmit,
         register,
@@ -35,7 +37,8 @@ export default function SignupCard() {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const body = { ...values };
             console.log(`POSTing ${JSON.stringify(body, null, 2)}`);
-            const res = await fetch(`/api/user/create`, {
+
+            const res = await fetch(`${NEXTAUTH_URL}/api/user/create`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),

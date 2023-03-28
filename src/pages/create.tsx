@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import Router from "next/router";
+import { useRouter } from "next/router";
+import { NEXTAUTH_URL } from "src/redux/api";
 
 const Draft: React.FC = () => {
+    const router = useRouter();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -10,12 +12,12 @@ const Draft: React.FC = () => {
         e.preventDefault();
         try {
             const body = { title, content };
-            await fetch(`http://localhost:3000/api/post`, {
+            await fetch(`${NEXTAUTH_URL}/api/post`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             });
-            await Router.push("/drafts");
+            await router.push("/drafts");
         } catch (error) {
             console.error(error);
         }
@@ -41,7 +43,7 @@ const Draft: React.FC = () => {
                         value={content}
                     />
                     <input disabled={!content || !title} type="submit" value="Create" />
-                    <a className="back" href="#" onClick={() => Router.push("/")}>
+                    <a className="back" href="#" onClick={() => router.push("/")}>
                         or Cancel
                     </a>
                 </form>
