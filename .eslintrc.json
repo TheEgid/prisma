@@ -1,0 +1,74 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+    },
+    "root": true,
+    "extends": [
+        "eslint:recommended",
+        "plugin:sonarjs/recommended",
+        "airbnb-typescript/base",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "react-app/jest",
+        "plugin:prettier/recommended"
+    ],
+    "settings": {
+        "react": {
+            "version": "18.2.0"
+        }
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "project": "tsconfig.json"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "import",
+        "prettier",
+        "react-hooks",
+        "react",
+        "sonarjs",
+        "@jambit/typed-redux-saga"
+    ],
+    "rules": {
+        "@typescript-eslint/no-misused-promises": [
+            "error",
+            {
+                "checksVoidReturn": false
+            }
+        ],
+        "@typescript-eslint/interface-name-prefix": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@jambit/typed-redux-saga/use-typed-effects": "error",
+        "@jambit/typed-redux-saga/delegate-effects": "error",
+        "no-useless-constructor": "off",
+        "import/extensions": 0,
+        "semi": 0,
+        "space-before-function-paren": 0,
+        "arrow-parens": 0, // Несовместимо с prettier
+        "linebreak-style": 0,
+        "no-nested-ternary": 2,
+        "no-console": 0,
+        "class-methods-use-this": 0,
+        "object-curly-newline": 0,
+        "prettier/prettier": [
+            "warn",
+            {
+                "printWidth": 120,
+                "tabWidth": 4,
+                "bracketSpacing": true,
+                "bracketSameLine": true,
+                "semi": true,
+                "singleQuote": false,
+                "trailingComma": "es5"
+            }
+        ]
+    }
+}
