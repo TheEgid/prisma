@@ -6,7 +6,6 @@ import { NextRouter, useRouter } from "next/router";
 import { PostProps } from "../../components/Post";
 import { useSession } from "next-auth/react";
 import { prisma } from "tools/db";
-import { NEXTAUTH_URL } from "src/redux/api";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const post = await prisma.post.findUnique({
@@ -25,14 +24,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 async function publishPost(id: number, router: NextRouter): Promise<void> {
-    await fetch(`${NEXTAUTH_URL}/api/publish/${id}`, {
+    await fetch(`/api/publish/${id}`, {
         method: "PUT",
     });
     await router.push("/");
 }
 
 async function deletePost(id: number, router: NextRouter): Promise<void> {
-    await fetch(`${NEXTAUTH_URL}/api/post/${id}`, {
+    await fetch(`/api/post/${id}`, {
         method: "DELETE",
     });
     await router.push("/");

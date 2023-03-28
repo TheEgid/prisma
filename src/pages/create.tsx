@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
-import { NEXTAUTH_URL } from "src/redux/api";
 
 const Draft: React.FC = () => {
     const router = useRouter();
@@ -12,7 +11,7 @@ const Draft: React.FC = () => {
         e.preventDefault();
         try {
             const body = { title, content };
-            await fetch(`${NEXTAUTH_URL}/api/post`, {
+            await fetch(`/api/post`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),

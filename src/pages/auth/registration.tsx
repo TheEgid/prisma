@@ -19,9 +19,8 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { logger } from "tools/logger";
-import { NEXTAUTH_URL } from "src/redux/api";
 
-export default function SignupCard() {
+export default function RegistrationCard() {
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
 
@@ -35,14 +34,18 @@ export default function SignupCard() {
     async function onSubmit(values: any) {
         try {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            const body = { ...values };
-            console.log(`POSTing ${JSON.stringify(body, null, 2)}`);
+            const submittedValues = { ...values };
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+            const body = { ...{ name: submittedValues.email as string }, ...submittedValues };
 
-            const res = await fetch(`${NEXTAUTH_URL}/api/user/create`, {
+            logger.debug(`POSTing ${JSON.stringify(body, null, 2)}`);
+
+            const res = await fetch(`/api/user/create`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             });
+
             logger.debug(`res`, res);
             reset();
             // eslint-disable-next-line sonarjs/no-nested-template-literals, @typescript-eslint/restrict-template-expressions
@@ -60,19 +63,10 @@ export default function SignupCard() {
                     <Heading fontSize={"4xl"} textAlign={"center"}>
                         Sign up
                     </Heading>
-                    <Text fontSize={"lg"} color={"gray.600"}>
-                        to enjoy all of our cool features ✌️
-                    </Text>
                 </Stack>
                 <Box rounded={"lg"} bg={useColorModeValue("white", "gray.700")} boxShadow={"lg"} p={8}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack spacing={4}>
-                            <Box>
-                                <FormControl id="fullName" isRequired>
-                                    <FormLabel>Full name</FormLabel>
-                                    <Input type="text" {...register("name")} />
-                                </FormControl>
-                            </Box>
                             <FormControl id="email" isRequired>
                                 <FormLabel>Email address</FormLabel>
                                 <Input type="email" {...register("email")} />
