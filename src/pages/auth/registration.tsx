@@ -1,27 +1,23 @@
 import React from "react";
-import {
-    Flex,
-    Box,
-    FormControl,
-    FormLabel,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Stack,
-    Button,
-    Heading,
-    Text,
-    useColorModeValue,
-    Link,
-} from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { logger } from "tools/logger";
+import { Button, Form, FormGroup, FormLabel, InputGroup } from "react-bootstrap";
+import { PersonBadge, Eye, EyeSlash, Mailbox } from "react-bootstrap-icons";
+
+const offeye = <EyeSlash width="26" height="26" />;
+const eye = <Eye width="26" height="26" />;
+const mailbox = <Mailbox width="26" height="26" />;
+const person = <PersonBadge width="26" height="26" />;
 
 export default function RegistrationCard() {
-    const [showPassword, setShowPassword] = useState(false);
+    const [passwordShow, setPasswordShow] = useState(false);
+    const togglePasswordShow = () => {
+        setPasswordShow(!passwordShow);
+    };
+
     const router = useRouter();
 
     const {
@@ -56,63 +52,49 @@ export default function RegistrationCard() {
     }
 
     return (
-        // eslint-disable-next-line react/react-in-jsx-scope
-        <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
-            <Stack spacing={8} mx={"auto"} w={{ md: "md" }} maxW={"lg"} py={12} px={6}>
-                <Stack align={"center"}>
-                    <Heading fontSize={"4xl"} textAlign={"center"}>
-                        Sign up
-                    </Heading>
-                </Stack>
-                <Box rounded={"lg"} bg={useColorModeValue("white", "gray.700")} boxShadow={"lg"} p={8}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <Stack spacing={4}>
-                            <FormControl id="email" isRequired>
-                                <FormLabel>Email address</FormLabel>
-                                <Input type="email" {...register("email")} />
-                            </FormControl>
-                            <FormControl id="password" isRequired>
-                                <FormLabel>Password</FormLabel>
-                                <InputGroup>
-                                    <Input type={showPassword ? "text" : "password"} {...register("password")} />
-                                    <InputRightElement h={"full"}>
-                                        <Button
-                                            variant={"ghost"}
-                                            _hover={{ bg: "transparent" }}
-                                            _active={{ bg: "transparent" }}
-                                            // eslint-disable-next-line @typescript-eslint/no-shadow
-                                            onClick={() => setShowPassword((showPassword) => !showPassword)}>
-                                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                                        </Button>
-                                    </InputRightElement>
-                                </InputGroup>
-                            </FormControl>
-                            <Stack spacing={10} pt={2}>
-                                <Button
-                                    loadingText="Submitting"
-                                    size="lg"
-                                    type="submit"
-                                    isLoading={isSubmitting}
-                                    bg={"blue.400"}
-                                    color={"white"}
-                                    _hover={{
-                                        bg: "blue.500",
-                                    }}>
-                                    Sign up
-                                </Button>
-                            </Stack>
-                            <Stack pt={6}>
-                                <Text align={"center"}>
-                                    Already a user?{" "}
-                                    <Link color={"blue.400"} href="signin">
-                                        Sign in
-                                    </Link>
-                                </Text>
-                            </Stack>
-                        </Stack>
-                    </form>
-                </Box>
-            </Stack>
-        </Flex>
+        <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+            <div className="p-4 bg-white rounded shadow-sm" style={{ maxWidth: "400px", width: "100%" }}>
+                <h2 className="text-center mb-4">Регистрация</h2>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <Form.Group className="mb-3" controlId="formGroupEmail">
+                        <Form.Label>Электронная почта</Form.Label>
+                        <InputGroup>
+                            <InputGroup.Text> {mailbox} </InputGroup.Text>
+                            <Form.Control
+                                className="form-control"
+                                placeholder="введите адрес электронной почты"
+                                type="email"
+                                {...register("email", { required: true })}
+                            />
+                        </InputGroup>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGroupPassword">
+                        <Form.Label>Пароль</Form.Label>
+                        <InputGroup>
+                            <InputGroup.Text onClick={togglePasswordShow}>
+                                {passwordShow ? eye : offeye}
+                            </InputGroup.Text>
+                            <Form.Control
+                                className="form-control"
+                                placeholder="введите пароль"
+                                type={passwordShow ? "text" : "password"}
+                                {...register("password", { required: true })}
+                            />
+                        </InputGroup>
+                    </Form.Group>
+                    <div className="d-flex justify-content-center">
+                        <Button variant="primary" type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Submitting..." : "Зарегистрироваться"}
+                        </Button>
+                    </div>
+                </Form>
+                <p className="mt-3 text-center">
+                    Already a user?{" "}
+                    <a href="signin" className="text-primary">
+                        Sign in
+                    </a>
+                </p>
+            </div>
+        </div>
     );
 }

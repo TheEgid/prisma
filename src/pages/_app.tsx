@@ -6,8 +6,10 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { Persistor } from "redux-persist";
 import { wrapper } from "src/redux/store";
+import { SSRProvider } from "react-bootstrap";
 
 import theme from "../theme";
+import "../styles/globals.scss";
 
 const App = ({ Component, ...rest }: AppProps) => {
     const { store } = wrapper.useWrappedStore(rest);
@@ -20,9 +22,11 @@ const App = ({ Component, ...rest }: AppProps) => {
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                         rest.pageProps.session
                     }>
-                    <ChakraProvider theme={theme}>
-                        <Component {...rest.pageProps} />
-                    </ChakraProvider>
+                    <SSRProvider>
+                        <ChakraProvider theme={theme}>
+                            <Component {...rest.pageProps} />
+                        </ChakraProvider>
+                    </SSRProvider>
                 </SessionProvider>
             </PersistGate>
         </Provider>

@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from "typed-redux-saga";
-import { dogLoading, dogFetch, dogError } from "./slices";
+import { dogLoading, dogError } from "./slices";
 import { getDogDataFromApi } from "./ApiServices";
 import { DogActionTypes } from "./types";
 
