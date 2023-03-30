@@ -1,10 +1,10 @@
 import { AnyAction, CombinedState, combineReducers, Reducer } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import { dogSliceReducer } from "./dog/slices";
-import { IDogState } from "./dog/types";
+import { calcCaseSliceReducer } from "./calcCase/slices";
+import { ICalcCaseState } from "./calcCase/types";
 
 const combinedReducer = combineReducers({
-    dogSliceReducer,
+    calcCaseSliceReducer,
 });
 
 const rootReducer = (state: any | undefined, action: AnyAction) => {
@@ -22,7 +22,7 @@ const rootReducer = (state: any | undefined, action: AnyAction) => {
 
 export default rootReducer as Reducer<
     CombinedState<{
-        dogSliceReducer: IDogState;
+        calcCaseSliceReducer: ICalcCaseState;
     }>,
     AnyAction
 >;

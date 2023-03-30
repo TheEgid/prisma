@@ -34,7 +34,13 @@ const Header = () => {
     if (!session) {
         right = (
             <Nav>
-                <Link className={"nav-link"} onClick={() => signIn()} href="#">
+                <Link
+                    className={"nav-link"}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        void signIn();
+                    }}
+                    href="#">
                     Войти
                 </Link>
             </Nav>

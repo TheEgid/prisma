@@ -5,7 +5,7 @@ import Post, { PostProps } from "../components/Post";
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import { prisma } from "tools/db";
 import { useDispatch } from "react-redux";
-import { fetchDogStart } from "src/redux/dog/slices";
+import { fetchcalcCaseStart } from "src/redux/calcCase/slices";
 
 type Props = {
     feed: PostProps[];
@@ -14,7 +14,7 @@ type Props = {
 const MainPage: React.FC<Props> = (props) => {
     const dispatch = useDispatch();
 
-    dispatch(fetchDogStart());
+    dispatch(fetchcalcCaseStart());
 
     return (
         <Layout>

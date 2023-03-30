@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "src/components/Layout";
 import { Button, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { getReduxCalcCaseData } from "src/redux/dog/selectors";
+import { getReduxCalcCaseData } from "src/redux/calcCase/selectors";
 import { CalcUnit, ContractData, ObjectData } from "@prisma/client";
 
 type CalcCaseResult = CalcUnit & {
@@ -82,6 +82,7 @@ const TableMain = () => {
         // console.log(parsed.at(0)?.createdAt);
 
         const inputDate = addHoursToIsoDate(parsed.at(0)?.createdAt);
+        console.log(5555);
         console.log(inputDate);
     }
 

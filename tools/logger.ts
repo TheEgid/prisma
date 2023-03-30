@@ -1,8 +1,12 @@
 import log from "loglevel";
-import chalk from "chalk";
+import chalk, { ChalkInstance } from "chalk";
 import prefix from "loglevel-plugin-prefix";
 
-const colors = {
+interface IChalkInstances {
+    [key: string]: ChalkInstance;
+}
+
+const colors: IChalkInstances = {
     TRACE: chalk.magenta,
     DEBUG: chalk.cyan,
     INFO: chalk.blue,
@@ -16,13 +20,24 @@ if (process.env.NODE_ENV == "development") {
 
 prefix.reg(log);
 
+// try {
+//     // Выполнение кода, который может сгенерировать ошибку
+//     throw new Error("Ошибка: CustomError");
+// } catch (err) {
+//     // Проверка имени ошибки
+//     if (err.name === "CustomError") {
+//         // Пропуск ошибки
+//         return;
+//     }
+
+//     // Вывод сообщения об ошибке
+//     log.error(err.message);
+// }
+
 prefix.apply(log, {
     format(level, name, timestamp) {
-        // eslint-disable-next-line sonarjs/no-nested-template-literals, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        return `${chalk.gray(`[${String(timestamp)}]`)} ${(colors as any)[level.toUpperCase() as any](
-            level
-            // eslint-disable-next-line sonarjs/no-nested-template-literals
-        )} ${chalk.green(`${name as string}:`)}`;
+        const stamp = "[" + timestamp.toString() + "]";
+        return `${chalk.gray(stamp)} ${colors[level.toUpperCase()](level)} ${chalk.green(name as string)}`;
     },
 });
 

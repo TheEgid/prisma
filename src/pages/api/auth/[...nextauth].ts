@@ -5,7 +5,6 @@ import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { logger } from "tools/logger";
 import { prisma } from "tools/db";
-import { NEXTAUTH_URL } from "src/redux/api";
 
 const options: NextAuthOptions = {
     debug: true,
@@ -39,7 +38,7 @@ const options: NextAuthOptions = {
             },
             authorize: async (credentials) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                const user = await fetch(`${NEXTAUTH_URL}/api/user/check-credentials`, {
+                const user = await fetch(`${process.env.NEXTAUTH_URL as string}/api/user/check-credentials`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -63,16 +62,23 @@ const options: NextAuthOptions = {
             },
         }),
     ],
+    secret: process.env.SECRET,
     // pages
     pages: {
         signIn: "/auth/signin",
         signOut: "/auth/signout",
     },
     adapter: PrismaAdapter(prisma),
-    secret: process.env.SECRET,
     logger: {
         error: (code, metadata) => {
-            logger.error(code, metadata);
+            if (
+                `${process.env.NEXTAUTH_URL as string}/api/auth/session` ===
+                (metadata as { [key: string]: unknown; error: Error }).url
+            ) {
+                return;
+            } else {
+                logger.error(code, metadata);
+            }
         },
         warn: (code) => {
             logger.warn(code);
@@ -81,7 +87,12 @@ const options: NextAuthOptions = {
             logger.debug(code, metadata);
         },
     },
-    session: { strategy: "jwt" },
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        updateAge: 24 * 60 * 60, // 24 hours
+    },
+
     // callbacks
     // callbacks: {
     //     signIn: ({ user, account, profile, email, credentials }) => {
