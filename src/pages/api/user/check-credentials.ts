@@ -1,8 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import sha256 from "crypto-js/sha256";
-import { omit } from "lodash";
+import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "tools/db";
 import { logger } from "tools/logger";
+
+const omit = <T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> => {
+    const o = { ...obj };
+    keys.forEach((key) => delete o[key]);
+    return o;
+};
+
+const hashPassword = (password: string) => {
+    return sha256(password).toString();
+};
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
@@ -13,10 +22,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         throw new Error(`The HTTP ${req.method} method is not supported at this route.`);
     }
 }
-
-const hashPassword = (password: string) => {
-    return sha256(password).toString();
-};
 
 // POST /api/user
 async function handlePOST(res: NextApiResponse<any>, req: NextApiRequest) {
@@ -31,11 +36,9 @@ async function handlePOST(res: NextApiResponse<any>, req: NextApiRequest) {
             password: true,
         },
     });
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     if (user && user.password == hashPassword(req.body.password)) {
-        // if (user && user.password == req.body.password) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        console.log(user.password, req.body.password);
         logger.debug("password correct");
         res.json(omit(user, "password"));
     } else {

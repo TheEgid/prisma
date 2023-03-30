@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import sha256 from "crypto-js/sha256";
 import { logger } from "tools/logger";
 import { prisma } from "tools/db";

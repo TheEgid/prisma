@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "tools/db";
 
 // eslint-disable-next-line @typescript-eslint/require-await

@@ -51,7 +51,7 @@ const options: NextAuthOptions = {
                 })
                     .then((res) => res.json())
                     .catch(() => {
-                        return null;
+                        return "null";
                     });
 
                 if (user) {
@@ -82,20 +82,18 @@ const options: NextAuthOptions = {
         },
     },
     session: { strategy: "jwt" },
-    // // callbacks
+    // callbacks
     // callbacks: {
-    //   signIn: async ({
-    //     user,
-    //     account,
-    //     profile,
-    //     email,
-    //     credentials,
-    //   }) => {
-    //     logger.debug(`signIn:user`, user, "\n\n");
-    //     logger.debug(`signIn:account`, account, "\n\n");
-    //     logger.debug(`signIn:profile`, profile, "\n\n");
-    //     return true;
-    //   },
+    //     signIn: ({ user, account, profile, email, credentials }) => {
+    //         logger.debug(`signIn:user`, user, "\n\n");
+    //         logger.debug(`signIn:account`, account, "\n\n");
+    //         logger.debug(`signIn:profile`, profile, "\n\n");
+    //         logger.debug(`signIn:email`, email, "\n\n");
+    //         logger.debug(`signIn:credentials`, credentials, "\n\n");
+    //         return true;
+    //     },
+    // },
+
     // redirect: async ({ url, baseUrl }): Promise<any> => {
     //   logger.debug(`url, baseUrl`, url, baseUrl);
     //   const params = new URLSearchParams(new URL(url).search);

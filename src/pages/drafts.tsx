@@ -32,6 +32,10 @@ type Props = {
     drafts: PostProps[];
 };
 
+const TableData = () => {
+    return <></>;
+};
+
 const Drafts: React.FC<Props> = (props) => {
     const { data: session } = useSession();
 
@@ -46,6 +50,8 @@ const Drafts: React.FC<Props> = (props) => {
 
     return (
         <Layout>
+            <TableData />
+
             <div className="page">
                 <h1>My Drafts</h1>
                 <main>

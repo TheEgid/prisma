@@ -1,26 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
+import { Nav, Navbar } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { logger } from "tools/logger";
-import { Button, Nav, Navbar, NavLink } from "react-bootstrap";
 
 const Header = () => {
     const router = useRouter();
-    const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
 
     const { data: session, status } = useSession();
+    logger.debug(session);
 
-    // const [show, setShow] = useState(false);
-
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
+    const getLinkClassName = (path: string) => {
+        return router.pathname === path ? "nav-link active" : "nav-link";
+    };
 
     let left = (
         <Nav>
-            <NavLink href="/" active={isActive("/")}>
+            <Link className={getLinkClassName("/")} href="/">
                 Feed
-            </NavLink>
+            </Link>
         </Nav>
     );
 
@@ -28,9 +27,11 @@ const Header = () => {
 
     if (status === "loading") {
         left = (
-            <NavLink href="/" active={isActive("/")}>
-                Feed
-            </NavLink>
+            <Nav>
+                <Link className={getLinkClassName("/")} href="/">
+                    Feed
+                </Link>
+            </Nav>
         );
         right = <p>Validating session...</p>;
     }
@@ -38,7 +39,9 @@ const Header = () => {
     if (!session) {
         right = (
             <Nav>
-                <Button onClick={() => signIn()}>Log in</Button>
+                <Link className={"nav-link"} onClick={() => signIn()} href="#">
+                    Войти
+                </Link>
             </Nav>
         );
     }
@@ -47,24 +50,30 @@ const Header = () => {
         left = (
             <>
                 <Nav>
-                    <NavLink href="/" active={isActive("/")}>
+                    <Link className={getLinkClassName("/")} href="/">
                         Feed
-                    </NavLink>
-                    <NavLink href="/drafts" active={isActive("/drafts")}>
+                    </Link>
+                    <Link className={getLinkClassName("/drafts")} href="/drafts">
                         My drafts
-                    </NavLink>
+                    </Link>
                 </Nav>
             </>
         );
         right = (
             <>
                 <Nav>
-                    <NavLink href="/create" active={isActive("/create")}>
+                    <Link className={getLinkClassName("/create")} href="/create">
                         New post
-                    </NavLink>
-                    <NavLink href="#" onClick={() => signOut()}>
-                        Log out
-                    </NavLink>
+                    </Link>
+                    <Link
+                        className={"nav-link"}
+                        href="#"
+                        onClick={() => {
+                            logger.debug("callbackUrl: ", router.basePath);
+                            void signOut({ callbackUrl: router.basePath });
+                        }}>
+                        Выйти
+                    </Link>
                 </Nav>
             </>
         );
@@ -73,9 +82,9 @@ const Header = () => {
     return (
         <>
             <Navbar bg="light" expand="lg">
-                <NavLink href="/">
-                    <Navbar.Brand>Blog</Navbar.Brand>
-                </NavLink>
+                <Link href="/">
+                    <Navbar.Brand>Калькулятор</Navbar.Brand>
+                </Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -93,93 +102,5 @@ const Header = () => {
         </>
     );
 };
-
-// const Header: React.FC = () => {
-//     const router = useRouter();
-//     const isActive: (pathname: string) => boolean = (pathname) => router.pathname === pathname;
-
-//     const { data: session, status } = useSession();
-//     logger.debug(session);
-//     let left = (
-//         <HStack>
-//             <Link href="/" legacyBehavior>
-//                 <a className="bold" data-active={isActive("/")}>
-//                     Feed
-//                 </a>
-//             </Link>
-//         </HStack>
-//     );
-
-//     let right = null;
-
-//     if (status == "loading") {
-//         left = (
-//             <div>
-//                 <Link href="/" legacyBehavior>
-//                     <a data-active={isActive("/")}>Feed</a>
-//                 </Link>
-//             </div>
-//         );
-//         right = (
-//             <div>
-//                 <p>Validating session ...</p>
-//                 <style>{`
-//                     .right {
-//                         margin-left: auto;
-//                     }
-//                 `}</style>
-//             </div>
-//         );
-//     }
-
-//     if (!session) {
-//         right = (
-//             <HStack>
-//                 <Button onClick={() => signIn()}>Log in</Button>
-//             </HStack>
-//         );
-//     }
-
-//     if (session) {
-//         left = (
-//             <HStack>
-//                 <Link href="/" legacyBehavior>
-//                     <a data-active={isActive("/")}>Feed</a>
-//                 </Link>
-//                 <Link href="/drafts" legacyBehavior>
-//                     <a data-active={isActive("/drafts")}>My drafts</a>
-//                 </Link>
-//             </HStack>
-//         );
-//         right = (
-//             <HStack>
-//                 <p>
-//                     {session.user && session.user.name} ({session.user && session.user.email})
-//                 </p>
-//                 <Link href="/create" passHref legacyBehavior>
-//                     <Button>
-//                         <a>New post</a>
-//                     </Button>
-//                 </Link>
-//                 <Button
-//                     onClick={() => {
-//                         logger.debug("callbackUrl: ", router.basePath);
-//                         void signOut();
-//                     }}>
-//                     Log out
-//                 </Button>
-//             </HStack>
-//         );
-//     }
-
-//     return (
-//         <nav>
-//             <HStack p={5} justify="space-between" borderBottom="1px solid" shadow="md">
-//                 {left}
-//                 {right}
-//             </HStack>
-//         </nav>
-//     );
-// };
 
 export default Header;

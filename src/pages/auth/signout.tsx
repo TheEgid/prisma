@@ -3,15 +3,14 @@ import { GetStaticProps } from "next";
 import { signOut } from "next-auth/react";
 import { logger } from "tools/logger";
 
-interface Props {
+interface LogoutProps {
     callbackUrl: string;
 }
 
-export default function logout({ callbackUrl }: Props) {
-    logger.debug(`callbackUrl`);
-    logger.debug(callbackUrl);
+export default function logout({ callbackUrl }: LogoutProps) {
+    logger.debug(`callbackUrl: ${callbackUrl}`);
     void signOut({ callbackUrl });
-    return <div></div>;
+    return <></>;
 }
 
 // eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars

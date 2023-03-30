@@ -29,7 +29,7 @@ type Props = {
     feed: PostProps[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const MainPage: React.FC<Props> = (props) => {
     const dispatch = useDispatch();
 
     dispatch(fetchDogStart());
@@ -37,7 +37,7 @@ const Blog: React.FC<Props> = (props) => {
     return (
         <Layout>
             <Box className="page" pt={5}>
-                <Heading>! Public Feed </Heading>
+                <Heading>Public Feed </Heading>
                 <VStack mt={5} spacing={5}>
                     {props.feed.map((post) => (
                         <Box key={post.id} w="full" shadow="lg" _active={{ shadow: "unset" }}>
@@ -50,4 +50,4 @@ const Blog: React.FC<Props> = (props) => {
     );
 };
 
-export default Blog;
+export default MainPage;
