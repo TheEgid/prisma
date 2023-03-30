@@ -1,7 +1,13 @@
 import { call, put, takeLatest } from "typed-redux-saga";
 import { dogLoading, dogError } from "./slices";
-import { getDogDataFromApi } from "./ApiServices";
+
 import { DogActionTypes } from "./types";
+
+const getDogDataFromApi = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const res = await (await fetch(`/api/calc-case`, { method: "GET" })).json();
+    console.log(res);
+};
 
 const fetchDogSaga = function* () {
     try {
