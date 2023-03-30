@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice, createAction } from "@reduxjs/toolkit";
-import { DogActionTypes, IDogData, IDogState } from "./types";
+import { DogActionTypes, IDogState } from "./types";
 
 export const fetchDogStart = createAction(DogActionTypes.FETCH_DOG_START);
 
 const initialState: IDogState = {
-    url: "",
+    calcCaseData: "",
     loading: false,
     error: false,
 };
@@ -17,10 +17,10 @@ export const dogSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        dogFetch(state, action: PayloadAction<IDogData>) {
+        dogFetch(state, action: PayloadAction<string>) {
             state.loading = false;
             state.error = false;
-            state.url = action.payload.message;
+            state.calcCaseData = action.payload;
         },
         dogError(state) {
             state.loading = false;

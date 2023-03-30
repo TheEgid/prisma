@@ -3,12 +3,12 @@ export enum DogActionTypes {
 }
 
 export interface IDogState {
-    url: string;
+    calcCaseData: string;
     loading: boolean;
     error: boolean;
 }
 
-export interface IDogData {
-    message: string;
-    status: string;
-}
+// export interface IDogData {
+//     message: string;
+//     status: string;
+// }

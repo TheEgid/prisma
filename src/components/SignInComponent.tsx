@@ -42,9 +42,6 @@ const SignInComponent = () => {
 
             logger.debug(`POSTing ${JSON.stringify(body, null, 2)}`);
 
-            console.log(body);
-            console.log(router.query);
-
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             const res = await signIn("credentials", {
                 ...body,

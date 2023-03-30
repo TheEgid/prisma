@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Layout from "src/components/Layout";
 import { Button, Table } from "react-bootstrap";
-// import { GetServerSideProps } from "next";
-// import Layout from "../components/Layout";
-// import Post, { PostProps } from "../components/Post";
-// import { useSession, getSession } from "next-auth/react";
-// import { prisma } from "tools/db";
+import { useSelector } from "react-redux";
+import { getReduxCalcCaseData } from "src/redux/dog/selectors";
 
 export interface IRegisteredVisitor {
     id: string;
@@ -60,6 +57,9 @@ const TableMain = () => {
         console.log(`Visitor with ID ${selectedVisitorId as string} deleted!`);
         setSelectedVisitorId(null);
     };
+
+    const todos = useSelector(getReduxCalcCaseData);
+    console.log(todos);
 
     return (
         <>
