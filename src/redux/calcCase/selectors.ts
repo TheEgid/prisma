@@ -1,3 +1,3 @@
 import { RootState } from "../store";
 
-export const getReduxCalcCaseData = (state: RootState) => state.calcCaseSliceReducer.calcCaseData;
+export const getReduxCalcCaseDataAllByEmail = (state: RootState) => state.calcCaseSliceReducer.calcCaseDataAllByEmail;

@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "src/components/Layout";
 import { Button, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { getReduxCalcCaseData } from "src/redux/calcCase/selectors";
-import { CalcUnit, ContractData, ObjectData } from "@prisma/client";
-
-type CalcCaseResult = CalcUnit & {
-    contractData: ContractData | null;
-    objectData: ObjectData[] | null;
-};
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { getReduxCalcCaseDataAllByEmail } from "src/redux/calcCase/selectors";
+import { useSession } from "next-auth/react";
+import { TCalcCaseResult } from "src/types";
+import { calcCaseFetchAllByEmail, fetchCalcCaseStartAllByEmail } from "src/redux/calcCase/slices";
+import { wrapper } from "src/redux/store";
 
 export interface IRegisteredVisitor {
     id: string;
@@ -23,40 +21,47 @@ const formatDate = (dateString: string): string => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString().slice(0, 5);
 };
 
-function addHoursToIsoDate(isoDate: Date | undefined): string | undefined {
-    if (!isoDate) {
-        return;
-    }
-    const date = new Date(isoDate);
-    date.setHours(date.getHours() + 3);
-    return date.toISOString();
-}
+// function addHoursToIsoDate(isoDate: Date | undefined): string | undefined {
+//     if (!isoDate) {
+//         return;
+//     }
+//     const date = new Date(isoDate);
+//     date.setHours(date.getHours() + 3);
+//     return date.toISOString();
+// }
+
+const visitors: IRegisteredVisitor[] = [
+    {
+        id: "50499887-22e5-481f-8bc9-5d299183fceb",
+        email: "ytyyy@gmail.com",
+        isEmailConfirmed: true,
+        role: "guest",
+        createdAt: "2023-01-07 16:38:13.000",
+    },
+    {
+        id: "999yy9887-22e5-481f-8bc9-5d299183fceb",
+        email: "nmtyy@gmail.com",
+        isEmailConfirmed: false,
+        role: "admin",
+        createdAt: "2023-02-07 18:38:13.000",
+    },
+];
+
+const tableHeads = ["#", "createdAt", "email", "confirmed", "role", "id", "operations"];
 
 const TableMain = () => {
-    const visitors: IRegisteredVisitor[] = [
-        {
-            id: "50499887-22e5-481f-8bc9-5d299183fceb",
-            email: "ytyyy@gmail.com",
-            isEmailConfirmed: true,
-            role: "guest",
-            createdAt: "2023-01-07 16:38:13.000",
-        },
-        {
-            id: "999yy9887-22e5-481f-8bc9-5d299183fceb",
-            email: "nmtyy@gmail.com",
-            isEmailConfirmed: false,
-            role: "admin",
-            createdAt: "2023-02-07 18:38:13.000",
-        },
-    ];
+    const dispatch = useDispatch();
+    const [selectedVisitorId, setSelectedVisitorId] = useState("");
+
+    const { data: session } = useSession();
+
+    if (!session || !session?.user?.email) {
+        return <div>You need to be authenticated to view this page.</div>;
+    }
 
     const sortedVisitors = [...visitors].sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-
-    const tableHeads = ["#", "createdAt", "email", "confirmed", "role", "id", "operations"];
-
-    const [selectedVisitorId, setSelectedVisitorId] = useState<string | null>(null);
 
     const handleIdClick = (id: string) => {
         console.log(`ID clicked: ${id}`);
@@ -69,22 +74,16 @@ const TableMain = () => {
 
     const handleConfirmDelete = () => {
         // Perform delete operation
-        console.log(`Visitor with ID ${selectedVisitorId as string} deleted!`);
-        setSelectedVisitorId(null);
+        console.log(`Visitor with ID ${selectedVisitorId} deleted!`);
+        setSelectedVisitorId("");
     };
 
-    const selected = useSelector(getReduxCalcCaseData);
+    const email = session?.user?.email;
+    console.log(email);
 
-    if (selected) {
-        const parsed = JSON.parse(selected) as CalcCaseResult[];
-
-        // console.log(parsed.at(0)?.contractData?.contractContent);
-        // console.log(parsed.at(0)?.createdAt);
-
-        const inputDate = addHoursToIsoDate(parsed.at(0)?.createdAt);
-        console.log(5555);
-        console.log(inputDate);
-    }
+    // if (email) {
+    dispatch(fetchCalcCaseStartAllByEmail(email));
+    // }
 
     return (
         <>
@@ -92,7 +91,7 @@ const TableMain = () => {
                 <div>
                     <p>Are you sure you want to delete this visitor?</p>
                     <Button onClick={handleConfirmDelete}>Yes</Button>
-                    <Button onClick={() => setSelectedVisitorId(null)}>No</Button>
+                    <Button onClick={() => setSelectedVisitorId("")}>No</Button>
                 </div>
             )}
             <Table striped bordered hover>
@@ -130,7 +129,16 @@ const TableMain = () => {
     );
 };
 
-const CalcsPage = () => {
+const CalcsPage: React.FC = () => {
+    // useEffect(() => {
+
+    //     // console.log(parsed.at(0)?.contractData?.contractContent);
+    // }, []);
+
+    const selected = useSelector(getReduxCalcCaseDataAllByEmail, shallowEqual);
+    // const parsed = JSON.parse(selected) as TCalcCaseResult[];
+    console.log(selected);
+
     return (
         <>
             <Layout>
@@ -141,5 +149,9 @@ const CalcsPage = () => {
         </>
     );
 };
+
+// CalcsPage.getInitialProps = wrapper.getInitialPageProps(() => () => {
+//     return {};
+// });
 
 export default CalcsPage;

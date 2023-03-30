@@ -1,18 +1,32 @@
-import { CalcUnit, ContractData, ObjectData } from "@prisma/client";
+import { CalcUnit, ContractData, ObjectData, User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { prisma } from "tools/db";
 
-type CalcCaseResult = CalcUnit & {
+type TCalcCaseResult = CalcUnit & {
     contractData: ContractData | null;
     objectData: ObjectData[] | null;
+    author: User | null;
 };
 
-// POST /api/calc-case
+// GET /api/calc-case
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // const { title, content } = req.body;
     const session = await getSession({ req });
+
+    if (req.method === "GET") {
+        if (session) {
+            const result: TCalcCaseResult[] = await prisma.calcUnit.findMany({
+                include: { contractData: true, objectData: true, author: true },
+            });
+            res.json(result);
+            //     //     where: {
+            //     //         published: true,
+            //     //     },
+        }
+    } else {
+        res.status(405).send({ message: "Method not allowed" });
+    }
 
     // if (req.method === "POST") {
     //     if (session) {
@@ -28,19 +42,4 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     //         res.status(401).send({ message: "Unauthorized" });
     //     }
     // }
-
-    if (req.method === "GET") {
-        if (session) {
-            const result: CalcCaseResult[] = await prisma.calcUnit.findMany({
-                include: { contractData: true, objectData: true },
-            });
-
-            res.json(result);
-            //     //     where: {
-            //     //         published: true,
-            //     //     },
-        }
-    } else {
-        res.status(405).send({ message: "Method not allowed" });
-    }
 }

@@ -1,10 +1,12 @@
 import { PayloadAction, createSlice, createAction } from "@reduxjs/toolkit";
 import { CalcCaseActionTypes, ICalcCaseState } from "./types";
 
-export const fetchcalcCaseStart = createAction(CalcCaseActionTypes.CALC_CASE_START);
+export const fetchCalcCaseStartAll = createAction<string>(CalcCaseActionTypes.CALC_CASE_ALL);
+export const fetchCalcCaseStartAllByEmail = createAction<string>(CalcCaseActionTypes.CALC_CASE_ALL_BY_EMAIL);
 
 const initialState: ICalcCaseState = {
-    calcCaseData: "",
+    calcCaseDataAll: "",
+    calcCaseDataAllByEmail: "",
     loading: false,
     error: false,
 };
@@ -17,10 +19,15 @@ export const calcCaseSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
-        calcCaseFetch(state, action: PayloadAction<string>) {
+        calcCaseFetchAll(state, action: PayloadAction<string>) {
             state.loading = false;
             state.error = false;
-            state.calcCaseData = action.payload;
+            state.calcCaseDataAll = action.payload;
+        },
+        calcCaseFetchAllByEmail(state, action: PayloadAction<string>) {
+            state.loading = false;
+            state.error = false;
+            state.calcCaseDataAllByEmail = action.payload;
         },
         calcCaseError(state) {
             state.loading = false;
@@ -29,7 +36,7 @@ export const calcCaseSlice = createSlice({
     },
 });
 
-export const { calcCaseLoading, calcCaseFetch, calcCaseError } = calcCaseSlice.actions;
+export const { calcCaseFetchAllByEmail, calcCaseFetchAll, calcCaseLoading, calcCaseError } = calcCaseSlice.actions;
 
 export const calcCaseSliceReducer = calcCaseSlice.reducer;
 

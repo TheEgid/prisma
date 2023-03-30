@@ -1,15 +1,12 @@
 import { all, fork } from "typed-redux-saga";
-import { watchFetchCalcCase } from "./calcCase/sagas";
+import { watchCalcCase } from "./calcCase/sagas";
 
 const rootSaga = function* () {
     yield* all([
-        fork(watchFetchCalcCase),
-        // fork(watchUser),
-        // fork(watchInteractor),
+        fork(watchCalcCase),
         // fork(watchAlbum),
         // fork(watchImage),
         // fork(watchAuthentication),
-        // fork(watchFetchRegisteredVisitor),
     ]);
 };
 
