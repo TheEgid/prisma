@@ -8,33 +8,28 @@ import { logger } from "tools/logger";
 const Header = () => {
     const router = useRouter();
 
-    const { data: session, status } = useSession();
-    logger.debug(session);
-
     const getLinkClassName = (path: string) => {
         return router.pathname === path ? "nav-link active" : "nav-link";
     };
 
-    let left = (
-        <Nav>
+    const FeedLink = () => {
+        return (
             <Link className={getLinkClassName("/")} href="/">
                 Feed
             </Link>
+        );
+    };
+
+    const { data: session, status } = useSession();
+    logger.debug(session);
+
+    let left = (
+        <Nav>
+            <FeedLink />
         </Nav>
     );
 
-    let right = null;
-
-    if (status === "loading") {
-        left = (
-            <Nav>
-                <Link className={getLinkClassName("/")} href="/">
-                    Feed
-                </Link>
-            </Nav>
-        );
-        right = <p>Validating session...</p>;
-    }
+    let right = status === "loading" ? <p>Validating session...</p> : null;
 
     if (!session) {
         right = (
@@ -48,34 +43,31 @@ const Header = () => {
 
     if (session) {
         left = (
-            <>
-                <Nav>
-                    <Link className={getLinkClassName("/")} href="/">
-                        Feed
-                    </Link>
-                    <Link className={getLinkClassName("/drafts")} href="/drafts">
-                        My drafts
-                    </Link>
-                </Nav>
-            </>
+            <Nav>
+                <FeedLink />
+                <Link className={getLinkClassName("/drafts")} href="/drafts">
+                    My drafts
+                </Link>
+                <Link className={getLinkClassName("/calcs")} href="/calcs">
+                    My calculations
+                </Link>
+            </Nav>
         );
         right = (
-            <>
-                <Nav>
-                    <Link className={getLinkClassName("/create")} href="/create">
-                        New post
-                    </Link>
-                    <Link
-                        className={"nav-link"}
-                        href="#"
-                        onClick={() => {
-                            logger.debug("callbackUrl: ", router.basePath);
-                            void signOut({ callbackUrl: router.basePath });
-                        }}>
-                        Выйти
-                    </Link>
-                </Nav>
-            </>
+            <Nav>
+                <Link className={getLinkClassName("/create")} href="/create">
+                    New post
+                </Link>
+                <Link
+                    className={"nav-link"}
+                    href="#"
+                    onClick={() => {
+                        logger.debug("callbackUrl: ", router.basePath);
+                        void signOut({ callbackUrl: router.basePath });
+                    }}>
+                    Выйти
+                </Link>
+            </Nav>
         );
     }
 
@@ -85,13 +77,10 @@ const Header = () => {
                 <Link href="/">
                     <Navbar.Brand>Калькулятор</Navbar.Brand>
                 </Link>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                        <div>{left}</div>
-                        <div>{right}</div>
-                    </div>
-                </Navbar.Collapse>
+                <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                    <div>{left}</div>
+                    <div>{right}</div>
+                </div>
             </Navbar>
             {session && (
                 <small style={{ bottom: 0 }}>
