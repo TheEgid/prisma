@@ -21,7 +21,7 @@ const Header = () => {
     };
 
     const { data: session, status } = useSession();
-    logger.debug(session);
+    // logger.debug(session);
 
     let left = (
         <Nav>

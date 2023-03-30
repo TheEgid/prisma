@@ -11,6 +11,8 @@ model CalcUnit {
   id           Int           @id @default(autoincrement())
   author       User?         @relation(fields: [authorId], references: [id])
   authorId     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   contractData ContractData?
   objectData   ObjectData[]
 }
@@ -87,9 +89,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model Dog {
-  id   String  @id @default(cuid())
-  name String?
 }

@@ -3,13 +3,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { prisma } from "tools/db";
 
-// POST /api/calc-case
-
 type CalcCaseResult = CalcUnit & {
     contractData: ContractData | null;
-    objectData: ObjectData[];
+    objectData: ObjectData[] | null;
 };
 
+// POST /api/calc-case
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // const { title, content } = req.body;

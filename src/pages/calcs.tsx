@@ -3,6 +3,12 @@ import Layout from "src/components/Layout";
 import { Button, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { getReduxCalcCaseData } from "src/redux/dog/selectors";
+import { CalcUnit, ContractData, ObjectData } from "@prisma/client";
+
+type CalcCaseResult = CalcUnit & {
+    contractData: ContractData | null;
+    objectData: ObjectData[] | null;
+};
 
 export interface IRegisteredVisitor {
     id: string;
@@ -16,6 +22,15 @@ const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString() + " " + date.toLocaleTimeString().slice(0, 5);
 };
+
+function addHoursToIsoDate(isoDate: Date | undefined): string | undefined {
+    if (!isoDate) {
+        return;
+    }
+    const date = new Date(isoDate);
+    date.setHours(date.getHours() + 3);
+    return date.toISOString();
+}
 
 const TableMain = () => {
     const visitors: IRegisteredVisitor[] = [
@@ -58,8 +73,17 @@ const TableMain = () => {
         setSelectedVisitorId(null);
     };
 
-    const todos = useSelector(getReduxCalcCaseData);
-    console.log(todos);
+    const selected = useSelector(getReduxCalcCaseData);
+
+    if (selected) {
+        const parsed = JSON.parse(selected) as CalcCaseResult[];
+
+        // console.log(parsed.at(0)?.contractData?.contractContent);
+        // console.log(parsed.at(0)?.createdAt);
+
+        const inputDate = addHoursToIsoDate(parsed.at(0)?.createdAt);
+        console.log(inputDate);
+    }
 
     return (
         <>
