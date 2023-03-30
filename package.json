@@ -10,6 +10,7 @@
     "upgrade_packages": "ncu -u -x typescript",
     "prisma_studio": "npx prisma studio",
     "prisma_seed": "npx prisma db seed",
+    "prisma_push": "npx prisma db push",
     "start": "next start -p 3006",
     "test": "jest",
     "serve": "yarn build && yarn start",

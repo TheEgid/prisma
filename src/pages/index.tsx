@@ -7,24 +7,6 @@ import { prisma } from "tools/db";
 import { useDispatch } from "react-redux";
 import { fetchDogStart } from "src/redux/dog/slices";
 
-export const getStaticProps: GetStaticProps = async () => {
-    const currentFeed = await prisma.post.findMany({
-        where: {
-            published: true,
-        },
-        include: {
-            author: {
-                select: {
-                    name: true,
-                },
-            },
-        },
-    });
-    return {
-        props: { feed: currentFeed },
-    };
-};
-
 type Props = {
     feed: PostProps[];
 };
@@ -48,6 +30,24 @@ const MainPage: React.FC<Props> = (props) => {
             </Box>
         </Layout>
     );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+    const currentFeed = await prisma.post.findMany({
+        where: {
+            published: true,
+        },
+        include: {
+            author: {
+                select: {
+                    name: true,
+                },
+            },
+        },
+    });
+    return {
+        props: { feed: currentFeed },
+    };
 };
 
 export default MainPage;

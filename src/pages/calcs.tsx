@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "src/components/Layout";
+import { Button, Table } from "react-bootstrap";
 // import { GetServerSideProps } from "next";
 // import Layout from "../components/Layout";
 // import Post, { PostProps } from "../components/Post";
@@ -19,30 +20,30 @@ const formatDate = (dateString: string): string => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString().slice(0, 5);
 };
 
-import { Button, Table } from "react-bootstrap";
-
-const visitors: IRegisteredVisitor[] = [
-    {
-        id: "50499887-22e5-481f-8bc9-5d299183fceb",
-        email: "ytyyy@gmail.com",
-        isEmailConfirmed: true,
-        role: "guest",
-        createdAt: "2023-01-07 16:38:13.000",
-    },
-    {
-        id: "999yy9887-22e5-481f-8bc9-5d299183fceb",
-        email: "nmtyy@gmail.com",
-        isEmailConfirmed: false,
-        role: "admin",
-        createdAt: "2023-02-07 18:38:13.000",
-    },
-];
-
-const sortedVisitors = [...visitors].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-const tableHeads = ["#", "createdAt", "email", "confirmed", "role", "id", "operations"];
-
 const TableMain = () => {
+    const visitors: IRegisteredVisitor[] = [
+        {
+            id: "50499887-22e5-481f-8bc9-5d299183fceb",
+            email: "ytyyy@gmail.com",
+            isEmailConfirmed: true,
+            role: "guest",
+            createdAt: "2023-01-07 16:38:13.000",
+        },
+        {
+            id: "999yy9887-22e5-481f-8bc9-5d299183fceb",
+            email: "nmtyy@gmail.com",
+            isEmailConfirmed: false,
+            role: "admin",
+            createdAt: "2023-02-07 18:38:13.000",
+        },
+    ];
+
+    const sortedVisitors = [...visitors].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    const tableHeads = ["#", "createdAt", "email", "confirmed", "role", "id", "operations"];
+
     const [selectedVisitorId, setSelectedVisitorId] = useState<string | null>(null);
 
     const handleIdClick = (id: string) => {
