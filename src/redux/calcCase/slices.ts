@@ -5,8 +5,8 @@ export const fetchCalcCaseStartAll = createAction<string>(CalcCaseActionTypes.CA
 export const fetchCalcCaseStartAllByEmail = createAction<string>(CalcCaseActionTypes.CALC_CASE_ALL_BY_EMAIL);
 
 const initialState: ICalcCaseState = {
-    calcCaseDataAll: "",
-    calcCaseDataAllByEmail: "",
+    calcCaseDataAll: "no data",
+    calcCaseDataAllByEmail: "no data",
     loading: false,
     error: false,
 };

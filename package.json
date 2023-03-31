@@ -17,7 +17,7 @@
     "e2e_test": "playwright test"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.5.4",
+    "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@next-auth/prisma-adapter": "^1.0.5",
@@ -41,7 +41,7 @@
     "react-bootstrap": "^2.7.2",
     "react-bootstrap-icons": "^1.10.2",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.8",
+    "react-hook-form": "^7.43.9",
     "react-markdown": "^8.0.6",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",

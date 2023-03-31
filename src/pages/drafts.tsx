@@ -5,6 +5,10 @@ import Post, { PostProps } from "../components/Post";
 import { useSession, getSession } from "next-auth/react";
 import { prisma } from "tools/db";
 
+type Props = {
+    drafts: PostProps[];
+};
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     const session = await getSession({ req });
     if (!session) {
@@ -26,10 +30,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
         props: { drafts },
     };
-};
-
-type Props = {
-    drafts: PostProps[];
 };
 
 const Drafts: React.FC<Props> = (props) => {

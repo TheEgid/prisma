@@ -16,7 +16,7 @@ const RootComponent = (props: IRootComponentProps) => {
             <Head>
                 <title>{documentTitle}</title>
             </Head>
-            <Container>{elem}</Container>
+            <Container fluid>{elem}</Container>
         </>
     );
 };

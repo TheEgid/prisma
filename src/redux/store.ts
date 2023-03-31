@@ -6,7 +6,6 @@ import { configureStore, Store } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
-// import { initImageSaga } from "./image/sagas";
 
 export interface IPersistorStore extends Store {
     runSaga: () => void;
@@ -25,7 +24,6 @@ const makeStore = () => {
         key: "primary",
         storage,
         // blacklist: ['dogSlice', 'registeredVisitorSlice', 'userSlice.error'],
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         rootReducer,
     });
 
@@ -55,7 +53,6 @@ const makeStore = () => {
         store.sagaTask = sagaMiddleware.run(rootSaga);
     };
     store.runSaga();
-    // sagaMiddleware.run(initImageSaga);
 
     return store;
 };

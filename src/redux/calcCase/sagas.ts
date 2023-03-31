@@ -1,14 +1,14 @@
 import { call, put, takeEvery } from "typed-redux-saga";
-import { CalcCaseActionTypes, ICalcCaseFormInput, TCalcCasehAction } from "./types";
+import { CalcCaseActionTypes, TCalcCasehAction } from "./types";
 import { calcCaseLoading, calcCaseError, calcCaseFetchAll, calcCaseFetchAllByEmail } from "./slices";
 
-const fetchAll = async () => {
+const fetchApi = async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await (await fetch(`/api/calc-case`, { method: "GET" })).json();
     return JSON.stringify(result);
 };
 
-const fetchById = async (email: string) => {
+const fetchApiByEmail = async (email: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result = await (await fetch(`/api/calc-case/${email}`, { method: "GET" })).json();
     return JSON.stringify(result);
@@ -17,20 +17,17 @@ const fetchById = async (email: string) => {
 const fetchCalcCaseAllSaga = function* () {
     try {
         yield* put(calcCaseLoading());
-        const response = yield* call(fetchAll);
+        const response = yield* call(fetchApi);
         yield* put(calcCaseFetchAll(response));
     } catch (error) {
         yield* put(calcCaseError());
     }
 };
 
-const fetchCalcCaseByEmailSaga = function* (props: TCalcCasehAction<ICalcCaseFormInput>) {
-    const email = props.payload;
-    console.log(email);
-
+const fetchCalcCaseByEmailSaga = function* (props: TCalcCasehAction<string>) {
     try {
         yield* put(calcCaseLoading());
-        const response = yield* call(fetchById, email.email);
+        const response = yield* call(fetchApiByEmail, props.payload);
         yield* put(calcCaseFetchAllByEmail(response));
     } catch (error) {
         yield* put(calcCaseError());

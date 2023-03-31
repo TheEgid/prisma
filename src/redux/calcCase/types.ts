@@ -14,7 +14,3 @@ export type TCalcCasehAction<Payload> = {
     type: CalcCaseActionTypes;
     payload: Payload;
 };
-
-export interface ICalcCaseFormInput {
-    email: string;
-}

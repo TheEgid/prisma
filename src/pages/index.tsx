@@ -4,18 +4,12 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import { prisma } from "tools/db";
-// import { useDispatch } from "react-redux";
 
 type Props = {
     feed: PostProps[];
 };
 
 const MainPage: React.FC<Props> = (props) => {
-    // const dispatch = useDispatch();
-
-    // dispatch(fetchCalcCaseStartAll());
-    // dispatch(fetchCalcCaseStartAllByEmail());
-
     return (
         <Layout>
             <Box className="page" pt={5}>
